@@ -10,7 +10,7 @@ void setup() {
   println(sketchPath());  
   background(0);
   try {
-    game = new Game(sketchPath() + "/../../game/game.res");
+    game = new Game(sketchPath() + "/../example.res");
     game.loadGame();
     game.printSummary();
   } catch (IOException e) {
