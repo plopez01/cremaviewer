@@ -15,7 +15,5 @@ abstract class Popup {
   
   void render(UserInterface ui, int x, int y) {
     if (!open) return;
-    ui.b.fill(darkenColor(c, 20));
-    ui.b.rect(x, y, w, h);
   }
 }
