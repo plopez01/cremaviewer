@@ -10,7 +10,7 @@ abstract class Unit {
     this.health = health;
     this.pos = pos;
 
-    infoPopup = new UnitPopup(200, 200, getPlayerColor(player));
+    infoPopup = new UnitPopup(this, 200, 200, getPlayerColor(player));
   }
 
   void render(UserInterface ui, int scaledX, int scaledY, int cellSize) {
