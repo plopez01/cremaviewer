@@ -12,6 +12,9 @@ class UnitPopup extends Popup {
     super.render(ui, x, y, cellSize);
     if (!open) return;
     
+    x = constrain(x, VIEWER_MARGIN_HOR, width-w-VIEWER_MARGIN_HOR);
+    y = constrain(y, VIEWER_MARGIN_VER, MAP_HEIGHT*cellSize + VIEWER_MARGIN_VER - h);
+    
     ui.b.fill(darkenColor(c, 180), 160);
     ui.b.rect(x, y, w, h);
     

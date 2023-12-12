@@ -18,7 +18,8 @@ abstract class Unit {
       infoPopup.setOpen(true);
     } else infoPopup.setOpen(false);
     
-    int margin = 20;
+    // TODO: set to zero as we aren't checking overlapings
+    int margin = 0;
     if (squareRaycast(mouseX, mouseY, scaledX, scaledY, cellSize+margin)) {
       infoPopup.setOpen(true);
       if (mouseClick(LEFT)) ui.setPinned(id, !ui.isPinned(id));
