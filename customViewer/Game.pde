@@ -2,7 +2,7 @@ int PLAYER_COUNT = 4;
 int MAP_WIDTH = 80;
 int MAP_HEIGHT = 40;
 int LAYERS = 2;
-int ROUNDS = 120;
+int ROUNDS = 121;
 int GEM_VALUE = 30;
 
 int FURYANS = 20;
@@ -190,7 +190,7 @@ class Game {
     
     textAlign(LEFT);
     fill(255);
-    text("Round: " + (round+1), xOff, yOff);
+    text("Round: " + round, xOff, yOff);
     
     for (int playerId = 0; playerId < PLAYER_COUNT; playerId++) {
       int score = cells[round][playerId] + GEM_VALUE * gems[round][playerId];
