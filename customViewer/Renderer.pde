@@ -29,17 +29,17 @@ class Renderer {
 
   int CELL_SIZE = (width - VIEWER_MARGIN_HOR) / MAP_WIDTH;
 
-  UserInterface UserInterface;
+  UserInterface ui;
   
   // Round, y, x
   int[][][] map;
 
   Unit[][] units;
 
-  Renderer(UserInterface UserInterface, int[][][] map, Unit[][] units) {
+  Renderer(UserInterface ui, int[][][] map, Unit[][] units) {
     this.map = map;
     this.units = units;
-    this.UserInterface = UserInterface;
+    this.ui = ui;
   }
 
   void render(int turn) {
@@ -91,7 +91,11 @@ class Renderer {
     // Draw units
     for (Unit unit : units[turn]) {
       if (unit == null) continue;
-      unit.render(UserInterface, round(unit.pos.y*CELL_SIZE + VIEWER_MARGIN_HOR + CELL_SIZE/2.0), round(unit.pos.x*CELL_SIZE + VIEWER_MARGIN_VER + CELL_SIZE/2.0), CELL_SIZE);
+      int scaledX = round(unit.pos.y*CELL_SIZE + VIEWER_MARGIN_HOR + CELL_SIZE/2.0);
+      int scaledY = round(unit.pos.x*CELL_SIZE + VIEWER_MARGIN_VER + CELL_SIZE/2.0);
+      
+      unit.render(scaledX, scaledY, CELL_SIZE);
+      unit.renderUI(ui, scaledX, scaledY, CELL_SIZE);
     }
   }
 }

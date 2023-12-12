@@ -13,7 +13,7 @@ abstract class Popup {
     open = visible; 
   }
   
-  void render(UserInterface ui, int x, int y) {
+  void render(UserInterface ui, int x, int y, int cellSize) {
     if (!open) return;
   }
 }
