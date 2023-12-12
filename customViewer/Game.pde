@@ -190,7 +190,7 @@ class Game {
     
     textAlign(LEFT);
     fill(255);
-    text("Round: " + (round+1), xOff, yOff);
+    text("Round: " + round, xOff, yOff);
     
     for (int playerId = 0; playerId < PLAYER_COUNT; playerId++) {
       int score = cells[round][playerId] + GEM_VALUE * gems[round][playerId];
