@@ -23,7 +23,7 @@ void loadGame(Reader f) {
 void handlePathArgument(String path) {
   try {
     if (path.startsWith("https://")) {
-      titleText = "Loading game from URL " + path;
+      titleText = "Loading game from argument provided URL " + path;
       URL url = new URL(path);
       loadGame(new InputStreamReader(url.openStream()));
     } else {
@@ -31,7 +31,7 @@ void handlePathArgument(String path) {
       loadGame(new FileReader(path));
     }
   } catch (IOException e) {
-    titleText = "Failed to open game from file provided in gameFile property";
+    titleText = "Failed to open game from file provided in gameFile argument";
   }
 }
 
@@ -57,7 +57,7 @@ void fileSelected(File f) throws IOException {
   if (f == null) {
     f = new File(sketchPath() + "/../example.res");
     println("Loading example file");
-    titleText = "Loading example game file";
+    titleText = "Loading example game file...";
   } else {
     titleText = "Loading game from file " + f.getName() + "...";
   }
