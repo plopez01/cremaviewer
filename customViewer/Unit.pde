@@ -13,7 +13,7 @@ abstract class Unit {
     infoPopup = new UnitPopup(this, 200, 200, getPlayerColor(player));
   }
 
-  void render(UserInterface ui, int scaledX, int scaledY, int cellSize) {
+  void renderUI(UserInterface ui, int scaledX, int scaledY, int cellSize){
     if (ui.isPinned(id)) {
       infoPopup.setOpen(true);
     } else infoPopup.setOpen(false);
@@ -23,6 +23,11 @@ abstract class Unit {
       if (mouseClick(LEFT)) ui.setPinned(id, !ui.isPinned(id));
     }
     
-    infoPopup.render(ui, scaledX, scaledY);
+    infoPopup.render(ui, scaledX, scaledY, cellSize);
+  }
+
+  void render(int scaledX, int scaledY, int cellSize) {
+    
+    
   }
 }

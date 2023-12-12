@@ -1,7 +1,7 @@
 class Hellhound extends Unit {
   @Override
-  void render(UserInterface ui, int scaledX, int scaledY, int cellSize) {
-    super.render(ui, scaledX, scaledY, cellSize);
+  void render(int scaledX, int scaledY, int cellSize) {
+    super.render(scaledX, scaledY, cellSize);
     
     stroke(200, 0, 0);
     strokeWeight(1);
