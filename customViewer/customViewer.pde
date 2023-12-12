@@ -53,7 +53,6 @@ void setup() {
 }
 
 void fileSelected(File f) throws IOException {
-  println(Thread.currentThread().getId());
   if (f == null) {
     f = new File(sketchPath() + "/../example.res");
     println("Loading example file");
