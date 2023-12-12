@@ -9,8 +9,15 @@ void setup() {
   //size(1760, 940);
   println(sketchPath());  
   background(0);
+  File gameFile;
+  String argPath = System.getProperty("gameFile");
+  if (argPath != null) {
+    gameFile = new File(argPath);
+  } else {
+    gameFile = selectInput();
+  }
   try {
-    game = new Game(sketchPath() + "/../example.res");
+    game = new Game(gameFile);
     game.loadGame();
     game.printSummary();
   } catch (IOException e) {
