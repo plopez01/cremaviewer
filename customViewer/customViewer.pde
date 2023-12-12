@@ -1,19 +1,37 @@
 import java.io.*;
 import java.util.*;
+import java.net.*;
 
 Game game;
 boolean isPlaying = false;
+String titleText = "Choose a file to load";
 
-void loadGame(File f) {
+void loadGame(Reader f) {
   try {
     // Local first because this can run in a different thread and if we publish it too early it explodes
     Game g = new Game(f);
     g.loadGame();
     g.printSummary();
+    titleText = "Starting display";
     game = g;
   } catch (IOException e) {
     println("The specified game file hasn't been found.");
     exit();
+  }
+}
+
+void handlePathArgument(String path) {
+  try {
+    if (path.startsWith("https://")) {
+      titleText = "Loading game from URL " + path;
+      URL url = new URL(path);
+      loadGame(new InputStreamReader(url.openStream()));
+    } else {
+      titleText = "Loading game from file in argument: " + path;
+      loadGame(new FileReader(path));
+    }
+  } catch (IOException e) {
+    titleText = "Failed to open game from file provided in gameFile property";
   }
 }
 
@@ -25,18 +43,25 @@ void setup() {
   
   String argPath = System.getProperty("gameFile");
   if (argPath != null) {
-    loadGame(new File(argPath));
+    // simple thread given we only need one thing
+    // consistency with selectInput also calls back on another thread,
+    // allows showing loading message
+    new Thread(() -> handlePathArgument(argPath)).start();
   } else {
     selectInput("Select game to view", "fileSelected");
   }
 }
 
-void fileSelected(File f) {
+void fileSelected(File f) throws IOException {
+  println(Thread.currentThread().getId());
   if (f == null) {
     f = new File(sketchPath() + "/../example.res");
     println("Loading example file");
+    titleText = "Loading example game file";
+  } else {
+    titleText = "Loading game from file " + f.getName() + "...";
   }
-  loadGame(f);
+  loadGame(new FileReader(f));
 }
 
 void draw() {
@@ -44,10 +69,9 @@ void draw() {
     background(0);
     textAlign(CENTER);
     textSize(60);
-    text("CREMATVIEWER", width / 2, height /2);
+    text("CREMAVIEWER", width / 2, height /2);
     textSize(20);
-    text("Choose a file to load", width / 2, height / 2 + 50);
-    redraw();
+    text(titleText, width / 2, height / 2 + 50);
     // Not started yet
     return;
   }
