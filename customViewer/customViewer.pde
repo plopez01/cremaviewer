@@ -14,9 +14,8 @@ void loadGame(Reader f) {
     g.printSummary();
     titleText = "Starting display";
     game = g;
-  } catch (IOException e) {
-    println("The specified game file hasn't been found.");
-    exit();
+  } catch (IOException | IllegalArgumentException e) {
+    titleText = "Error while opening specified game file: \n" + e.getMessage();
   }
 }
 
