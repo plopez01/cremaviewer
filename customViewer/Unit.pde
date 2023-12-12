@@ -18,7 +18,8 @@ abstract class Unit {
       infoPopup.setOpen(true);
     } else infoPopup.setOpen(false);
     
-    if (squareRaycast(mouseX, mouseY, scaledX, scaledY, cellSize)) {
+    int margin = 20;
+    if (squareRaycast(mouseX, mouseY, scaledX, scaledY, cellSize+margin)) {
       infoPopup.setOpen(true);
       if (mouseClick(LEFT)) ui.setPinned(id, !ui.isPinned(id));
     }
