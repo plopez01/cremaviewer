@@ -30,7 +30,7 @@ class Game {
   
   int round = 0;
 
-  Game(String filePath) throws FileNotFoundException {
+  Game(File filePath) throws FileNotFoundException {
     gameData = new BufferedReader(new FileReader(filePath));
   }
 
