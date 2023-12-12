@@ -19,12 +19,29 @@ void loadGame(Reader f) {
   }
 }
 
+void connectFromStdIn() throws IOException {
+  titleText = "Waiting for first round to be available on stdin...";
+  game = new Game(new InputStreamReader(System.in));
+  try {
+    isPlaying = true;
+    game.loadGame();
+  } catch (IOException | IllegalArgumentException e) {
+    titleText = "Error while reading game from stdin: \n" + e.getMessage();
+    game.readyToRender = false;
+  } catch (RuntimeException e) {
+    titleText = "Unexpected exception while reading game from stdin:\n" + e.getMessage();
+    e.printStackTrace();
+  }
+}
+
 void handlePathArgument(String path) {
   try {
     if (path.startsWith("https://")) {
       titleText = "Loading game from argument provided URL " + path;
       URL url = new URL(path);
       loadGame(new InputStreamReader(url.openStream()));
+    } else if (path.equals("stdin")) {
+      connectFromStdIn();
     } else {
       titleText = "Loading game from file in argument: " + path;
       loadGame(new FileReader(path));
@@ -37,10 +54,13 @@ void handlePathArgument(String path) {
 void setup() {
   fullScreen(1);
   //size(1760, 940);
-  println(sketchPath());  
+  println(sketchPath());
   background(0);
   
-  String argPath = System.getProperty("gameFile");
+  // To build directly in forced stdin mode
+  //System.setProperty("gameFile", "stdin");
+  
+  String argPath = System.getProperty("gameFile", System.getenv("GAMEFILE"));
   if (argPath != null) {
     // simple thread given we only need one thing
     // consistency with selectInput also calls back on another thread,
@@ -63,7 +83,7 @@ void fileSelected(File f) throws IOException {
 }
 
 void draw() {
-  if (game == null) {
+  if (game == null || !game.readyToRender) {
     background(0);
     textAlign(CENTER);
     textSize(60);

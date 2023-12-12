@@ -20,6 +20,7 @@ class Game {
   UserInterface ui = new UserInterface(createGraphics(width, height));
   Renderer caveRenderer;
   Renderer surfaceRenderer;
+  boolean readyToRender;
   
   Layer selectedLayer = Layer.CAVE;
   
@@ -31,6 +32,7 @@ class Game {
   int[][] gems = new int[ROUNDS][PLAYER_COUNT];
   
   int round = 0;
+  int lastAvailableRound;
 
   Game(Reader file) throws FileNotFoundException {
     gameData = new BufferedReader(file);
@@ -43,29 +45,8 @@ class Game {
     println(Arrays.toString(names));
   }
 
-  void loadGame() throws IOException, IllegalArgumentException {
-    int round = 0;
-    
+  void readRound(int round, int[][][][] map, Unit[][][] units, int[][] moves) throws IOException {
     skipLines(gameData, 2);
-
-    seed = gameData.readLine();
-
-    skipLines(gameData, 1);
-
-    if (!gameData.readLine().equals("Crematoria 1.2")) {
-      throw new IllegalArgumentException("Invalid game data, wrong file maybe?");
-    }
-
-    skipLines(gameData, 11);
-
-    names = gameData.readLine().split("names")[1].trim().split(" ");
-    
-    int[][][][] map = new int[LAYERS][ROUNDS][MAP_WIDTH][MAP_HEIGHT];
-    Unit[][][] units = new Unit[LAYERS][ROUNDS][TOTAL_UNITS];
-    int[][] moves = new int[ROUNDS][TOTAL_UNITS];
-    
-    while (true){
-      skipLines(gameData, 2);
       
       for (int layer = 0; layer < LAYERS; layer++){
         for (int x = 0; x < MAP_HEIGHT; x++) {
@@ -127,7 +108,7 @@ class Game {
       // Last round has no movements so end here
       if (round == ROUNDS-1){
         round = 0;
-        break;
+        return;
       }
       
       String move = gameData.readLine();
@@ -137,13 +118,40 @@ class Game {
         
         move = gameData.readLine();
       }
-      round++;
+  }
+  void loadGame() throws IOException, IllegalArgumentException {
+
+    skipLines(gameData, 2);
+
+    seed = gameData.readLine();
+
+    skipLines(gameData, 1);
+
+    if (!gameData.readLine().equals("Crematoria 1.2")) {
+      throw new IllegalArgumentException("Invalid game data, wrong file maybe?");
+    }
+
+    skipLines(gameData, 11);
+
+    names = gameData.readLine().split("names")[1].trim().split(" ");
+    
+    int[][][][] map = new int[LAYERS][ROUNDS][MAP_WIDTH][MAP_HEIGHT];
+    Unit[][][] units = new Unit[LAYERS][ROUNDS][TOTAL_UNITS];
+    int[][] moves = new int[ROUNDS][TOTAL_UNITS];
+    
+    readRound(0, map, units, moves);
+    
+    caveRenderer = new Renderer(ui, map[0], units[0]);
+    surfaceRenderer = new Renderer(ui, map[1], units[1]);
+    readyToRender = true;
+
+    for (int round = 1; round < ROUNDS; round++){
+      readRound(round, map, units, moves);
+      lastAvailableRound = round;
     }
     
     gameData.close();
     
-    caveRenderer = new Renderer(ui, map[0], units[0]);
-    surfaceRenderer = new Renderer(ui, map[1], units[1]);
   }
   
   void nextLayer(){
@@ -153,7 +161,7 @@ class Game {
   
   void nextRound(){
     round++;
-    if (round > ROUNDS-1) round = ROUNDS-1;
+    if (round > lastAvailableRound) round = lastAvailableRound;
   }
   
   void previousRound(){
