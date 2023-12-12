@@ -21,6 +21,8 @@ class Game {
   Renderer caveRenderer;
   Renderer surfaceRenderer;
   
+  Layer selectedLayer = Layer.CAVE;
+  
   BufferedReader gameData;
 
   String seed;
@@ -144,6 +146,11 @@ class Game {
     surfaceRenderer = new Renderer(ui, map[1], units[1]);
   }
   
+  void nextLayer(){
+    if (selectedLayer == Layer.CAVE) selectedLayer = Layer.SURFACE;
+    else if (selectedLayer == Layer.SURFACE) selectedLayer = Layer.CAVE;
+  }
+  
   void nextRound(){
     round++;
     if (round > ROUNDS-1) round = ROUNDS-1;
@@ -180,6 +187,10 @@ class Game {
     ui.b.endDraw();
     image(ui.b, 0, 0, width, height);
     ui.b.clear();
+  }
+  
+  void renderSelectedLayer(){
+    renderLayer(selectedLayer); 
   }
   
   void renderInfo(){

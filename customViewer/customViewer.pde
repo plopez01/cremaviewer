@@ -75,8 +75,7 @@ void draw() {
   }
   
   background(0);
-  game.renderLayer(Layer.CAVE);
-  //game.renderLayer(Layer.SURFACE);
+  game.renderSelectedLayer();
   
   game.renderInfo();
   

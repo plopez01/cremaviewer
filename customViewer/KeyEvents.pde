@@ -1,5 +1,6 @@
 boolean holdingSpace = false;
 boolean holdingControl = false;
+boolean holdingTab = false;
 
 int INICIO = 36;
 int FIN = 35;
@@ -20,6 +21,11 @@ void keyPressed(){
     else game.nextRound();
   }
   
+  if (keyCode == TAB && !holdingTab) {
+    game.nextLayer();
+    holdingTab = true;
+  }
+  
   if (key == ' ' && !holdingSpace) {
     isPlaying = !isPlaying;
     holdingSpace = true;
@@ -30,4 +36,5 @@ void keyReleased(){
   if (keyCode == CONTROL) holdingControl = false;
   
   if (key == ' ') holdingSpace = false;
+  if (keyCode == TAB) holdingTab = false;
 }
