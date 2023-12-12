@@ -23,7 +23,20 @@ class UnitPopup extends Popup {
     
     ui.b.textSize(20);
     ui.b.fill(255);
+    textAlign(LEFT);
     ui.b.text(unit.getClass().getSimpleName(), xOff, yOff - ui.b.textAscent()/2 - 2);
-    unit.render(x - 30, y, cellSize*3);
+    
+    textAlign(RIGHT);
+    ui.b.text("ID: " + unit.id, x + w - textWidth("ID: " + unit.id) - 6, yOff - ui.b.textAscent()/2 - 2);
+    
+    // Unit data
+    ui.b.text(
+      "Health: " + unit.health + 
+      "\nPosition: (Y=" + int(unit.pos.x) + ", X=" + int(unit.pos.y) + ")", 
+      xOff, yOff + 25);
+    
+    if (unit instanceof Hellhound) unit.render(x - 30, y, cellSize);
+    else unit.render(x - 30, y, cellSize*3);
+    
   }
 }
