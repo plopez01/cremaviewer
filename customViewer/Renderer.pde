@@ -72,6 +72,13 @@ class Renderer {
         int xPosCenter = round(xPos + CELL_SIZE/2.0);
         int yPosCenter = round(yPos + CELL_SIZE/2.0);
         
+        if (data == 'O') {
+          int sunStart = (MAP_WIDTH/2 + turn*2) % MAP_WIDTH;
+          int sunEnd = (sunStart + MAP_WIDTH/2) % MAP_WIDTH;
+          
+          if (y >= sunStart || y < sunEnd) fill(255, 0, 0);
+        }
+        
         square(xPos, yPos, CELL_SIZE);
         
         if (data == 'E'){
