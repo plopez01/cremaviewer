@@ -8,7 +8,8 @@ class Necromonger extends Unit {
   @Override
   void render(int scaledX, int scaledY, int cellSize){
     super.render(scaledX, scaledY, cellSize);
-    fill(80);
+    if (pos.z > 0) fill(80+50);
+    else fill(80);
     noStroke();
     circle(scaledX, scaledY, cellSize/2);
   }

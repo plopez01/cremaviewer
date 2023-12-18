@@ -4,7 +4,9 @@ class Pioneer extends Unit {
     super.render(scaledX, scaledY, cellSize);
     
     color playerColor = getPlayerColor(player);
-    fill(darkenColor(playerColor, 80));
+    if (pos.z > 0) fill(playerColor);
+    else fill(darkenColor(playerColor, 80));
+    
     noStroke();
     circle(scaledX, scaledY, cellSize/2);
   }

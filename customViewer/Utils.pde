@@ -4,6 +4,10 @@ void skipLines(BufferedReader reader, int lines) throws IOException {
   }
 }
 
+int manhattanDist(PVector from, PVector to){
+  return int(max(abs(to.y  - from.y), min(abs(to.x - from.x), min(abs(from.x + (MAP_WIDTH - to.x)), abs(to.x + (MAP_WIDTH - from.x))))));
+}
+
 boolean mouseClick(int button){
   if (mouseButton == button && !holdingMouse.getOrDefault(button, false)){
      holdingMouse.put(button, true);
@@ -12,16 +16,43 @@ boolean mouseClick(int button){
   return false;
 }
 
-color darkenColor(color c, int amount) {
-  int r = ((c >> 16) & 0xFF) - amount;
-  int g = ((c >> 8) & 0xFF) - amount;
-  int b = (c & 0xFF) - amount;
-  
-  if (r < 0) r = 0;
-  if (g < 0) g = 0;
-  if (b < 0) b = 0;
-  
+color constrainColor(int r, int g, int b){
+  r = constrain(r, 0, 255);
+  g = constrain(g, 0, 255);
+  b = constrain(b, 0, 255);
   return color(r, g, b);
+}
+
+color lightenColor(color c, int amount) {
+  return addColor(c, color(amount));
+}
+
+color darkenColor(color c, int amount) {
+  return subColor(c, color(amount));
+}
+
+color addColor(color a, color b){
+  int r1 = ((a >> 16) & 0xFF);
+  int g1 = ((a >> 8) & 0xFF);
+  int b1 = (a & 0xFF);
+  
+  int r2 = ((b >> 16) & 0xFF);
+  int g2 = ((b >> 8) & 0xFF);
+  int b2 = (b & 0xFF);
+  
+  return constrainColor(r1+r2, g1+g2, b1+b2);
+}
+
+color subColor(color a, color b){
+  int r1 = ((a >> 16) & 0xFF);
+  int g1 = ((a >> 8) & 0xFF);
+  int b1 = (a & 0xFF);
+  
+  int r2 = ((b >> 16) & 0xFF);
+  int g2 = ((b >> 8) & 0xFF);
+  int b2 = (b & 0xFF);
+  
+  return constrainColor(r1-r2, g1-g2, b1-b2);
 }
 
 // https://processing.org/examples/regularpolygon.html
